@@ -10,6 +10,23 @@ class Projet extends Model
     /** @use HasFactory<\Database\Factories\ProjetFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'titre',
+        'slug',
+        'description_courte',
+        'description_longue',
+        'type',
+        'statut',
+        'date',
+        'client',
+        'contexte',
+        'duree',
+        'role',
+        'projet_url',
+        'github_url',
+        'ordre_affichage',
+    ];
+
     public function technologies()
     {
         return $this->belongsToMany(Technologie::class);

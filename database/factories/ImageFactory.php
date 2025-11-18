@@ -19,7 +19,7 @@ class ImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'path' => function () {
+            'img_path' => function () {
                 $randomName = Str::uuid();
                 $imageUrl = "https://picsum.photos/1024/768.webp?random={$randomName}";
                 $path = "notes/{$randomName}.webp";
