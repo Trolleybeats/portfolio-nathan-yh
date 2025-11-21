@@ -32,7 +32,21 @@ class TechnologieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'categorie' => 'required|string|max:255',
+            'niveau' => 'required|string|max:255',
+        ]);
+
+        // Obtenir le prochain ordre d'affichage
+        $nextOrdre = \App\Models\Technologie::max('ordre_affichage') + 1;
+        
+        $validated['ordre_affichage'] = $nextOrdre;
+
+        \App\Models\Technologie::create($validated);
+
+        return redirect()->route('technologies.index')
+            ->with('success', 'Technologie ajoutée avec succès!');
     }
 
     /**
@@ -64,6 +78,10 @@ class TechnologieController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $technologie = \App\Models\Technologie::findOrFail($id);
+        $technologie->delete();
+
+        return redirect()->route('technologies.index')
+            ->with('success', 'Technologie supprimée avec succès!');
     }
 }

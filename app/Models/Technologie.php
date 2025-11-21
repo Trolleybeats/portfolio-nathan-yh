@@ -10,6 +10,13 @@ class Technologie extends Model
     /** @use HasFactory<\Database\Factories\TechnologieFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'nom',
+        'categorie',
+        'niveau',
+        'ordre_affichage',
+    ];
+
     public function projet()
     {
         return $this->belongsToMany(Projet::class);
