@@ -23,6 +23,16 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Projets',
+        href: 'projets',
+        icon: Folder,
+    },
+    {
+        title: 'Technologies',
+        href: 'technologies',
+        icon: BookOpen,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
