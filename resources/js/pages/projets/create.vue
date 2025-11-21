@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
+import Editor from '@tinymce/tinymce-vue';
 
 const form = useForm({
     titre: '',
@@ -108,13 +109,19 @@ const submit = () => {
                         <!--Type-->
                         <div>
                             <Label for="type"> Type </Label>
-                            <Input
+                            <select
                                 v-model="form.type"
-                                type="text"
                                 id="type"
-                                placeholder="Web, Mobile, Desktop..."
-                                class="mt-1"
-                            />
+                                class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-600 shadow-sm focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                            >
+                                <option value="" disabled>
+                                    Sélectionnez le type de projet
+                                </option>
+                                <option value="Web">Web</option>
+                                <option value="Mobile">Mobile</option>
+                                <option value="API">API</option>
+                                <option value="Design">Design</option>
+                            </select>
                             <p
                                 v-if="form.errors.type"
                                 class="mt-1 text-sm text-destructive"
@@ -126,13 +133,18 @@ const submit = () => {
                         <!--Statut-->
                         <div>
                             <Label for="statut"> Statut </Label>
-                            <Input
+                            <select
                                 v-model="form.statut"
-                                type="text"
                                 id="statut"
-                                placeholder="En cours, Terminé..."
-                                class="mt-1"
-                            />
+                                class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-600 shadow-sm focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                            >
+                                <option value="" disabled>
+                                    Sélectionnez le statut du projet
+                                </option>
+                                <option value="Brouillon">Brouillon</option>
+                                <option value="Publié">Publié</option>
+                                <option value="Archivé">Archivé</option>
+                            </select>
                             <p
                                 v-if="form.errors.statut"
                                 class="mt-1 text-sm text-destructive"
@@ -232,6 +244,59 @@ const submit = () => {
 
                         <!--Description longue-->
                         <!--Wiziwig-->
+                        <div>
+                            <Label for="description_longue" class="mb-1">
+                                Description longue
+                            </Label>
+                            <Editor
+                                v-model="form.description_longue"
+                                api-key="oig375edhy4phcrai14yp7jp8xgoy7f64p2of2nzig0vm246"
+                                :init="{
+                                    toolbar_mode: 'sliding',
+                                    plugins: [
+                                        // Core editing features
+                                        'anchor',
+                                        'autolink',
+                                        'charmap',
+                                        'codesample',
+                                        'emoticons',
+                                        'link',
+                                        'lists',
+                                        'media',
+                                        'searchreplace',
+                                        'table',
+                                        'visualblocks',
+                                        'wordcount',
+                                    ],
+                                    toolbar:
+                                        'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography uploadcare | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                                    tinycomments_mode: 'embedded',
+                                    tinycomments_author: 'Author name',
+                                    mergetags_list: [
+                                        {
+                                            value: 'First.Name',
+                                            title: 'First Name',
+                                        },
+                                        { value: 'Email', title: 'Email' },
+                                    ],
+                                    ai_request: (request, respondWith) =>
+                                        respondWith.string(() =>
+                                            Promise.reject(
+                                                'See docs to implement AI Assistant',
+                                            ),
+                                        ),
+                                    uploadcare_public_key:
+                                        '414eacce1c7ebfa403f5',
+                                }"
+                                initial-value="Détaillez votre projet ici..."
+                            />
+                            <p
+                                v-if="form.errors.description_longue"
+                                class="mt-1 text-sm text-destructive"
+                            >
+                                {{ form.errors.description_longue }}
+                            </p>
+                        </div>
 
                         <!--Boutons-->
                         <div class="flex justify-end gap-4">

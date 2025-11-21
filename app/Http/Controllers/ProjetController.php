@@ -59,7 +59,11 @@ class ProjetController extends Controller
      */
     public function show(string $id)
     {
-        return Inertia::render('projets/show');
+        $projet = \App\Models\Projet::findOrFail($id);
+        
+        return Inertia::render('projets/show', [
+            'projet' => $projet
+        ]);
     }
 
     /**
@@ -67,7 +71,11 @@ class ProjetController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('projets/edit');
+        $projet = \App\Models\Projet::findOrFail($id);
+        
+        return Inertia::render('projets/edit', [
+            'projet' => $projet
+        ]);
     }
 
     /**

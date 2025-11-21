@@ -28,6 +28,11 @@ const mainNavItems: NavItem[] = [
         href: 'projets',
         icon: Folder,
     },
+    {
+        title: 'Technologies',
+        href: 'technologies',
+        icon: BookOpen,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

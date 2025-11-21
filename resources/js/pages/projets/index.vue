@@ -26,6 +26,7 @@ const goToCreate = () => {
                 v-for="projet in projets"
                 :key="projet.id"
                 class="cursor-pointer transition-shadow hover:shadow-lg"
+                @click="router.visit(`/projets/${projet.id}`)"
             >
                 <CardHeader>
                     <CardTitle>{{ projet.titre }}</CardTitle>
