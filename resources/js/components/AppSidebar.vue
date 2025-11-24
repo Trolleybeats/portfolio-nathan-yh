@@ -25,12 +25,23 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Projets',
-        href: 'projets',
+        href: '/projets',
         icon: Folder,
     },
     {
         title: 'Technologies',
-        href: 'technologies',
+        href: '/technologies',
+        icon: BookOpen,
+    },
+
+    {
+        title: 'Éducation',
+        href: '/education',
+        icon: BookOpen,
+    },
+    {
+        title: 'Expériences',
+        href: '/experiences',
         icon: BookOpen,
     },
 ];

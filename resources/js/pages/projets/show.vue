@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { router } from '@inertiajs/vue3';
 
-const props = defineProps(['projet']);
+const props = defineProps(['projet', 'technologies']);
 
 const openProjectUrl = () => {
     window.open(props.projet.projet_url, '_blank');
@@ -128,6 +128,24 @@ const openGithubUrl = () => {
                                 </p>
                                 <p class="text-base">{{ projet.role }}</p>
                             </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <!--Technologies-->
+                <Card v-if="technologies.length">
+                    <CardHeader>
+                        <CardTitle>Technologies utilisées</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div class="flex flex-wrap gap-3">
+                            <Badge
+                                v-for="tech in technologies"
+                                :key="tech.id"
+                                variant="outline"
+                            >
+                                {{ tech.nom }}
+                            </Badge>
                         </div>
                     </CardContent>
                 </Card>

@@ -7,11 +7,16 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import Editor from '@tinymce/tinymce-vue';
+
+defineProps({
+    technologies: Array,
+});
 
 const form = useForm({
     titre: '',
@@ -28,6 +33,7 @@ const form = useForm({
     projet_url: '',
     github_url: '',
     ordre_affichage: 1,
+    technologies: [],
 });
 
 const submit = () => {
@@ -203,6 +209,54 @@ const submit = () => {
                                 class="mt-1 text-sm text-destructive"
                             >
                                 {{ form.errors.contexte }}
+                            </p>
+                        </div>
+
+                        <!--Technologies utilisées-->
+                        <div>
+                            <Label class="mb-3 block">
+                                Technologies utilisées
+                            </Label>
+                            <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
+                                <div
+                                    v-for="tech in technologies"
+                                    :key="tech.id"
+                                    class="flex items-center space-x-2"
+                                >
+                                    <Checkbox
+                                        :id="`tech-${tech.id}`"
+                                        :checked="
+                                            form.technologies.includes(tech.id)
+                                        "
+                                        @update:checked="
+                                            (checked) => {
+                                                if (checked) {
+                                                    form.technologies.push(
+                                                        tech.id,
+                                                    );
+                                                } else {
+                                                    form.technologies =
+                                                        form.technologies.filter(
+                                                            (id) =>
+                                                                id !== tech.id,
+                                                        );
+                                                }
+                                            }
+                                        "
+                                    />
+                                    <Label
+                                        :for="`tech-${tech.id}`"
+                                        class="cursor-pointer text-sm font-normal"
+                                    >
+                                        {{ tech.nom }}
+                                    </Label>
+                                </div>
+                            </div>
+                            <p
+                                v-if="form.errors.technologies"
+                                class="mt-1 text-sm text-destructive"
+                            >
+                                {{ form.errors.technologies }}
                             </p>
                         </div>
 

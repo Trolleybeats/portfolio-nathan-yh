@@ -9,4 +9,11 @@ class Education extends Model
 {
     /** @use HasFactory<\Database\Factories\EducationFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'diplome',
+        'etablissement',
+        'date_obtention',
+        'description',
+    ];
 }

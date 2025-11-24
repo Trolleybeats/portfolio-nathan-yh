@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->withoutTwoFactor()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'admin' => true,
         ]);
         $this->call([
             ProfilSeeder::class,
@@ -23,7 +24,7 @@ class DatabaseSeeder extends Seeder
             ExperienceSeeder::class,
             EducationSeeder::class,
             ProjetSeeder::class,
-            ImageSeeder::class,
-        ]);
+            ProjetTechnologieSeeder::class,
+            ]);
     }
 }
