@@ -313,9 +313,11 @@ const deleteTech = () => {
                     :key="tech.id"
                     class="flex flex-col justify-between rounded-lg border p-4 shadow-sm"
                 >
-                    <CardTitle class="mb-2 text-2xl font-semibold">{{
-                        tech.nom
-                    }}</CardTitle>
+                    <CardTitle
+                        class="mb-2 cursor-pointer text-2xl font-semibold"
+                        @click="router.visit(`/technologies/${tech.id}/edit`)"
+                        >{{ tech.nom }}</CardTitle
+                    >
                     <CardDescription class="text-sm text-muted-foreground">
                         Catégorie: {{ tech.categorie }}
                     </CardDescription>
@@ -323,6 +325,7 @@ const deleteTech = () => {
                         Niveau: {{ tech.niveau }}
                     </CardDescription>
                     <Button
+                        type="button"
                         variant="destructive"
                         @click="openDeleteDialog(tech)"
                     >

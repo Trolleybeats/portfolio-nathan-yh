@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Education;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class EducationController extends Controller
@@ -12,6 +14,7 @@ class EducationController extends Controller
      */
     public function index()
     {
+        Gate::authorize('manage', Education::class);
         $educations = \App\Models\Education::orderBy('date_obtention', 'desc')->get();
 
         return Inertia::render('education/index',
@@ -33,10 +36,11 @@ class EducationController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('manage', Education::class);
         $validated = $request->validate([
             'diplome' => 'required|string|max:255',
             'etablissement' => 'required|string|max:255',
-            'date_obtention' => 'required|date',
+            'date_obtention' => 'nullable|date',
             'description' => 'nullable|string',
         ]);
 
@@ -56,17 +60,31 @@ class EducationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit (Education $education)
     {
-        //
+        Gate::authorize('manage', Education::class);
+        return Inertia::render('education/edit', [
+            'education' => $education
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Education $education)
     {
-        //
+        Gate::authorize('manage', Education::class);
+        $validated = $request->validate([
+            'diplome' => 'required|string|max:255',
+            'etablissement' => 'required|string|max:255',
+            'date_obtention' => 'nullable|date',
+            'description' => 'nullable|string',
+        ]);
+
+        $education->update($validated);
+
+        return redirect()->route('education.index')
+            ->with('success', 'Éducation mise à jour avec succès!');
     }
 
     /**
@@ -74,6 +92,7 @@ class EducationController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('manage', Education::class);
         $education = \App\Models\Education::findOrFail($id);
         $education->delete();
 

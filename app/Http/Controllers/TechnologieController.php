@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Technologie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -12,6 +13,8 @@ class TechnologieController extends Controller
      * Display a listing of the resource.
      */
     public function index(){
+
+        Gate::authorize('manage', Technologie::class);
         $technologies = \App\Models\Technologie::orderBy('nom')->get();
 
         return Inertia::render('technologies/index',
@@ -33,6 +36,7 @@ class TechnologieController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('manage', Technologie::class);
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'categorie' => 'required|string|max:255',
@@ -61,25 +65,40 @@ class TechnologieController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $technologie = Technologie::findOrFail($id);
+        Gate::authorize('manage', $technologie);
+        
+        return Inertia::render('technologies/edit', [
+            'technologie' => $technologie
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Technologie $technologie)
     {
-        //
+        Gate::authorize('manage', $technologie);
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'categorie' => 'required|string|max:255',
+            'niveau' => 'required|string|max:255',
+        ]);
+
+        $technologie->update($validated);
+
+        return redirect()->route('technologies.index')
+            ->with('success', 'Technologie mise à jour avec succès!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Technologie $technologie)
     {
-        $technologie = \App\Models\Technologie::findOrFail($id);
+        Gate::authorize('manage', $technologie);
         $technologie->delete();
 
         return redirect()->route('technologies.index')

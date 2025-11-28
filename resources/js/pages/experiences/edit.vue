@@ -1,62 +1,41 @@
 <script setup>
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { router, useForm } from '@inertiajs/vue3';
 import Editor from '@tinymce/tinymce-vue';
-import { ref } from 'vue';
+
+const props = defineProps(['experience']);
 
 const form = useForm({
-    poste: '',
-    entreprise: '',
-    lieu: '',
-    type: '',
-    date_debut: '',
-    date_fin: '',
-    description: '',
+    poste: props.experience.poste,
+    entreprise: props.experience.entreprise,
+    lieu: props.experience.lieu,
+    type: props.experience.type,
+    date_debut: props.experience.date_debut,
+    date_fin: props.experience.date_fin,
+    description: props.experience.description,
 });
 
-defineProps(['experiences']);
-
 const submit = () => {
-    form.post('/experiences', {
-        onSuccess: () => form.reset(),
+    form.put(`/experiences/${props.experience.id}`, {
+        onSuccess: () => {
+            router.visit('/experiences');
+        },
     });
 };
-
-const deleteDialog = ref(false);
-const expToDelete = ref(null);
-
-const openDeleteDialog = (exp) => {
-    expToDelete.value = exp;
-    deleteDialog.value = true;
-};
-
-const deleteExperience = () => {
-    if (expToDelete.value) {
-        router.delete(`/experiences/${expToDelete.value.id}`, {
-            onSuccess: () => {
-                deleteDialog.value = false;
-                expToDelete.value = null;
-            },
-        });
-    }
-};
 </script>
+
 <template>
     <AppLayout>
-        <div class="mt-8 mr-8 ml-8 flex items-center justify-between">
-            <h1 class="text-4xl font-bold">Mon expérience</h1>
+        <div class="p-8">
+            <Button variant="outline" @click="router.visit('/experiences')">
+                ← Retour aux expériences
+            </Button>
         </div>
-        <!--Formulaire ajout expérience-->
+        <div class="mt-8 mr-8 ml-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold">Modifier l'expérience</h1>
+        </div>
+        <!--Formulaire modification expérience-->
         <form
             @submit.prevent="submit"
             class="m-8 flex flex-col gap-4 rounded-lg border p-6 shadow-md"
@@ -151,80 +130,16 @@ const deleteExperience = () => {
                             'wordcount',
                         ],
                         toolbar:
-                            'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+                            'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media',
                     }"
                 ></Editor>
             </div>
-            <button
+            <Button
                 type="submit"
-                class="self-end rounded bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
+                class="mt-4 self-start"
+                :disabled="form.processing"
+                >Enregistrer</Button
             >
-                Ajouter l'expérience
-            </button>
         </form>
-
-        <!--Liste des expériences-->
-        <div class="grid gap-6 p-8 md:grid-cols-2 lg:grid-cols-3">
-            <Card
-                v-for="exp in experiences"
-                :key="exp.id"
-                class="transition-shadow hover:shadow-lg"
-            >
-                <CardHeader>
-                    <CardTitle
-                        class="cursor-pointer"
-                        @click="router.visit(`/experiences/${exp.id}/edit`)"
-                        >{{ exp.poste }}</CardTitle
-                    >
-                </CardHeader>
-                <CardContent>
-                    <p>{{ exp.entreprise }}</p>
-                    <p>{{ exp.type }}</p>
-                    <p>{{ exp.lieu }}</p>
-                    <p>
-                        {{ exp.date_debut }} - {{ exp.date_fin || 'Présent' }}
-                    </p>
-                    <div v-html="exp.description"></div>
-                </CardContent>
-                <Button variant="destructive" @click="openDeleteDialog(exp)">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="mr-2 h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                    </svg>
-                    Supprimer
-                </Button>
-            </Card>
-        </div>
-        <!-- Dialog de confirmation de suppression -->
-        <Dialog v-model:open="deleteDialog">
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Confirmer la suppression</DialogTitle>
-                    <DialogDescription>
-                        Êtes-vous sûr de vouloir supprimer "{{
-                            expToDelete?.poste
-                        }}" ? Cette action est irréversible.
-                    </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                    <Button variant="outline" @click="deleteDialog = false">
-                        Annuler
-                    </Button>
-                    <Button variant="destructive" @click="deleteExperience">
-                        Supprimer
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
     </AppLayout>
 </template>

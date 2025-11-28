@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 
-class TechnologiePolicy
+class ExperiencePolicy
 {
     /**
      * Create a new policy instance.
@@ -16,6 +16,6 @@ class TechnologiePolicy
 
     public function manage(User $user): bool
     {
-        return $user->admin === true;
+        return $user->admin;
     }
 }

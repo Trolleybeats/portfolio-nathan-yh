@@ -92,6 +92,7 @@ const envoyerMail = () => {
         </div>
     </div>
     <div class="flex flex-row flex-wrap p-8">
+        <h2 class="mb-4 w-full text-2xl font-bold">Projets</h2>
         <Card
             v-for="projet in projets"
             :key="projet.id"
@@ -114,11 +115,12 @@ const envoyerMail = () => {
         >
             <h3 class="text-xl font-semibold">{{ experience.poste }}</h3>
             <p class="text-gray-600">{{ experience.entreprise }}</p>
+            <p class="text-gray-600">{{ experience.type }}</p>
             <p class="text-sm text-gray-500">
                 {{ experience.date_debut }} -
                 {{ experience.date_fin || 'Présent' }}
             </p>
-            <p>{{ experience.description }}</p>
+            <div v-html="experience.description"></div>
         </div>
     </div>
     <div class="p-8">
@@ -129,7 +131,7 @@ const envoyerMail = () => {
             <p class="text-sm text-gray-500">
                 {{ educ.date_obtention }}
             </p>
-            <p>{{ educ.description }}</p>
+            <div v-html="educ.description"></div>
         </div>
     </div>
 </template>

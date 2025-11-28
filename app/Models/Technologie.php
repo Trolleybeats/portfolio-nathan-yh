@@ -10,6 +10,8 @@ class Technologie extends Model
     /** @use HasFactory<\Database\Factories\TechnologieFactory> */
     use HasFactory;
 
+    protected $table = 'technologie';
+
     protected $fillable = [
         'nom',
         'categorie',
