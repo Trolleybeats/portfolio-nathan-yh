@@ -31,4 +31,6 @@ Route::resource('education', EducationController::class)->middleware(['auth', 'v
 
 Route::resource('experiences', ExperienceController::class)->middleware(['auth', 'verified']);
 
+Route::resource('profil', \App\Http\Controllers\ProfilController::class)->middleware(['auth', 'verified']);
+
 require __DIR__.'/settings.php';

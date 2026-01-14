@@ -14,7 +14,7 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, School, User } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -37,12 +37,17 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Éducation',
         href: '/education',
-        icon: BookOpen,
+        icon: School,
     },
     {
         title: 'Expériences',
         href: '/experiences',
         icon: BookOpen,
+    },
+    {
+        title: 'Profil',
+        href: '/profil',
+        icon: User,
     },
 ];
 

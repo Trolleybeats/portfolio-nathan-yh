@@ -5,8 +5,7 @@ import {
     CardDescription,
     CardTitle,
 } from '@/components/ui/card';
-import { dashboard, login } from '@/routes';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 
 const props = withDefaults(
     defineProps<{
@@ -33,37 +32,58 @@ const envoyerMail = () => {
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
     <div
-        class="flex bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]"
+        class="sticky top-0 flex w-full bg-[#FDFDFC] px-6 py-4 text-[#1b1b18] lg:px-8 dark:bg-[#0a0a0a]"
     >
         <header
-            class="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl"
+            class="w-full border-b border-black/10 pb-4 dark:border-white/10"
         >
-            <nav class="flex items-center justify-end gap-4">
-                <Link
-                    v-if="$page.props.auth.user"
-                    :href="dashboard()"
-                    class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                >
-                    Dashboard
-                </Link>
-                <template v-else>
-                    <Link
-                        :href="login()"
-                        class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+            <div class="flex items-start justify-between gap-6">
+                <div class="min-w-0">
+                    <h1
+                        class="text-lg leading-tight font-semibold tracking-tight"
                     >
-                        Se connecter
-                    </Link>
-                </template>
-            </nav>
+                        {{ profil.nom }} {{ profil.prenom }}
+                    </h1>
+                    <p
+                        v-if="profil?.titre"
+                        class="mt-1 text-sm text-black/70 dark:text-white/70"
+                    >
+                        {{ profil.titre }}
+                    </p>
+                </div>
+
+                <nav class="flex flex-wrap justify-end gap-x-6 gap-y-4 pt-0.5">
+                    <a
+                        href="#technologies"
+                        class="text-sm text-black hover:underline dark:text-blue-400"
+                        >Technologies</a
+                    >
+                    <a
+                        href="#projets"
+                        class="text-sm text-black hover:underline dark:text-blue-400"
+                        >Projets</a
+                    >
+                    <a
+                        href="#experiences"
+                        class="text-sm text-black hover:underline dark:text-blue-400"
+                        >Expériences</a
+                    >
+                    <a
+                        href="#education"
+                        class="text-sm text-black hover:underline dark:text-blue-400"
+                        >Éducation</a
+                    >
+                </nav>
+            </div>
         </header>
     </div>
     <div class="flex items-center gap-8 p-8">
         <div class="flex-1">
-            <h1>Bonjour, je m'appelle {{ profil.nom }} {{ profil.prenom }}</h1>
+            <h2>Bonjour, je m'appelle {{ profil.nom }} {{ profil.prenom }}</h2>
             <p>{{ profil.titre }}</p>
             <p>{{ profil.bio }}</p>
             <button
-                class="mt-4 rounded-sm bg-[#191400] px-5 py-1.5 text-sm leading-normal text-[#FDFDFC] hover:bg-[#2c2a00] dark:bg-[#EDEDEC] dark:text-[#1b1b18] dark:hover:bg-[#c4c2bd]"
+                class="mt-4 cursor-pointer rounded-sm bg-[#191400] px-5 py-1.5 text-sm leading-normal text-[#FDFDFC] hover:bg-[#2c2a00] dark:bg-[#EDEDEC] dark:text-[#1b1b18] dark:hover:bg-[#c4c2bd]"
                 @click="envoyerMail"
             >
                 Contactez-moi
@@ -77,7 +97,7 @@ const envoyerMail = () => {
             />
         </figure>
     </div>
-    <div class="p-8">
+    <div class="p-8" id="technologies">
         <h2 class="mb-4 text-2xl font-bold">Technologies</h2>
         <div class="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
             <div
@@ -91,7 +111,7 @@ const envoyerMail = () => {
             </div>
         </div>
     </div>
-    <div class="flex flex-row flex-wrap p-8">
+    <div class="flex flex-row flex-wrap p-8" id="projets">
         <h2 class="mb-4 w-full text-2xl font-bold">Projets</h2>
         <Card
             v-for="projet in projets"
@@ -106,7 +126,7 @@ const envoyerMail = () => {
             </CardContent>
         </Card>
     </div>
-    <div class="p-8">
+    <div class="p-8" id="experiences">
         <h2 class="mb-4 text-2xl font-bold">Expériences</h2>
         <div
             v-for="experience in experiences"
@@ -123,7 +143,7 @@ const envoyerMail = () => {
             <div v-html="experience.description"></div>
         </div>
     </div>
-    <div class="p-8">
+    <div class="p-8" id="education">
         <h2 class="mb-4 text-2xl font-bold">Éducation</h2>
         <div v-for="educ in education" :key="educ.id" class="mb-6">
             <h3 class="text-xl font-semibold">{{ educ.diplome }}</h3>
